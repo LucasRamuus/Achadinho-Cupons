@@ -14,18 +14,30 @@
     font-family: 'Poppins', sans-serif;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     background-color: var(--rosa-claro);
     color: var(--roxo-principal);
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding-bottom: 2rem;
 }
 
 /* Header */
 header {
     text-align: center;
-    padding: 2.5rem 1rem;
+    padding: 2rem 1rem;
     background: linear-gradient(135deg, #ffcce0 0%, #ffb6c1 100%);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .logo {
@@ -58,16 +70,16 @@ header {
 }
 
 h1 {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--roxo-principal);
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .slogan {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     color: var(--rosa-destaque);
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
     font-weight: 600;
 }
 
@@ -75,9 +87,9 @@ h1 {
 .abas-navegacao {
     display: flex;
     justify-content: center;
-    margin: 2rem 0 1rem;
+    margin: 1.5rem 0;
     gap: 15px;
-    padding: 0 2rem;
+    padding: 0 1rem;
     flex-wrap: wrap;
 }
 
@@ -124,8 +136,8 @@ h1 {
 
 /* Produtos */
 .produtos-container {
-    padding: 0 2rem;
-    margin-bottom: 3rem;
+    padding: 0 1rem;
+    margin-bottom: 2rem;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -143,84 +155,85 @@ h1 {
 }
 
 .categoria h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--roxo-escuro);
 }
 
 .produtos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
 }
 
 /* Cards de Produto */
 .produto {
     background: white;
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     position: relative;
     transition: all 0.3s ease;
 }
 
 .produto:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
 .badge {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    right: 12px;
     background-color: var(--rosa-destaque);
     color: white;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 20px;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     z-index: 2;
 }
 
 .badge.trending {
     background: linear-gradient(to right, #ff8a00, #ff2d55);
     clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
-    padding: 8px 15px;
+    padding: 6px 12px;
 }
 
 .produto img {
     width: 100%;
-    height: 220px;
+    height: 200px;
     object-fit: cover;
     border-bottom: 1px solid #eee;
 }
 
 .produto-info {
-    padding: 1.2rem;
+    padding: 1rem;
 }
 
 .produto h3 {
     color: var(--roxo-principal);
     margin-bottom: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    min-height: 40px;
 }
 
 .precos {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 0.7rem 0;
+    gap: 8px;
+    margin: 0.5rem 0;
 }
 
 .preco-antigo {
     text-decoration: line-through;
     color: var(--cinza);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .preco-atual {
     color: var(--rosa-destaque);
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .btn-comprar {
@@ -231,15 +244,16 @@ h1 {
     background: linear-gradient(to right, var(--roxo-principal), var(--rosa-destaque));
     color: white;
     text-align: center;
-    padding: 0.8rem;
-    margin-top: 1rem;
-    border-radius: 8px;
+    padding: 0.7rem;
+    margin-top: 0.8rem;
+    border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s;
     border: none;
     width: 100%;
     cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .btn-comprar:hover {
@@ -248,8 +262,8 @@ h1 {
 }
 
 .btn-comprar i {
-    margin-right: 8px;
-    font-size: 0.9rem;
+    margin-right: 6px;
+    font-size: 0.8rem;
     transition: all 0.3s;
 }
 
@@ -268,14 +282,19 @@ h1 {
 footer {
     background: linear-gradient(135deg, var(--roxo-escuro), #2a1245);
     color: white;
-    padding: 3rem 2rem 1rem;
+    padding: 2rem 1rem;
     text-align: center;
-    margin-top: 3rem;
+    margin-top: auto;
+    width: 100%;
 }
 
 .footer-content {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .logo-footer {
@@ -283,18 +302,17 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 1rem;
 }
 
 .logo-footer .discount-icon {
-    width: 35px;
-    height: 35px;
-    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
     animation: none;
 }
 
 .logo-footer h3 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 600;
 }
 
@@ -302,75 +320,259 @@ footer {
     display: flex;
     justify-content: center;
     gap: 1.5rem;
-    margin: 1.5rem 0;
 }
 
 .redes-sociais a {
     color: white;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     transition: all 0.3s;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .redes-sociais a:hover {
     color: var(--rosa-destaque);
     transform: translateY(-3px);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.footer-text {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .copyright {
     padding-top: 1.5rem;
+    margin-top: 1.5rem;
     border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9rem;
-    opacity: 0.7;
+    font-size: 0.8rem;
+    opacity: 0.8;
+    width: 100%;
 }
 
-/* Responsividade */
+/* Ajustes para tablet */
 @media (max-width: 768px) {
     .produtos-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
     
-    h1 {
-        font-size: 2rem;
+    .categoria h2 {
+        font-size: 1.4rem;
     }
     
-    .abas-navegacao {
-        gap: 10px;
+    footer {
+        padding: 1.5rem 1rem;
     }
     
-    .abas-navegacao button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+    .footer-content {
+        gap: 1.2rem;
+    }
+    
+    .logo-footer h3 {
+        font-size: 1.3rem;
     }
 }
 
+/* Ajustes para mobile */
 @media (max-width: 480px) {
     header {
-        padding: 2rem 1rem;
+        padding: 1.2rem 0.5rem;
+    }
+    
+    .logo {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .discount-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+        margin-bottom: 8px;
     }
     
     h1 {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
+        display: block;
     }
     
     .slogan {
-        font-size: 1.1rem;
-    }
-    
-    .produtos-container {
-        padding: 0 1rem;
-    }
-    
-    .redes-sociais a {
-        font-size: 1.5rem;
+        font-size: 0.9rem;
+        padding: 0 10px;
+        line-height: 1.3;
     }
     
     .abas-navegacao {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+        margin: 1rem 0;
     }
     
     .abas-navegacao button {
-        width: 80%;
+        padding: 10px 15px;
+        font-size: 0.85rem;
+        flex: 1;
         justify-content: center;
     }
+    
+    .produto-info {
+        padding: 0.8rem;
+    }
+    
+    .produto h3 {
+        font-size: 0.95rem;
+        min-height: auto;
+    }
+    
+    .preco-atual {
+        font-size: 1.1rem;
+    }
+    
+    .btn-comprar {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    /* ... (todo o CSS anterior permanece igual até o footer) ... */
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, var(--roxo-escuro), #2a1245);
+    color: white;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.logo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo-footer .discount-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    animation: none;
+}
+
+.logo-footer h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.redes-sociais {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.redes-sociais a {
+    color: white;
+    font-size: 1.3rem;
+    transition: all 0.3s;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.redes-sociais a:hover {
+    color: var(--rosa-destaque);
+    transform: translateY(-3px);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.footer-text {
+    max-width: 500px;
+    margin: 0 auto;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.copyright {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.75rem;
+    opacity: 0.8;
+    width: 100%;
+}
+
+/* Ajustes para tablet */
+@media (max-width: 768px) {
+    footer {
+        padding: 1.2rem 1rem;
+    }
+}
+
+/* Versão mobile compacta */
+@media (max-width: 480px) {
+    footer {
+        padding: 0.8rem 0.5rem;
+    }
+    
+    .footer-content {
+        gap: 0.6rem;
+    }
+    
+    .logo-footer {
+        gap: 6px;
+    }
+    
+    .logo-footer .discount-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+    
+    .logo-footer h3 {
+        font-size: 1rem;
+    }
+    
+    .redes-sociais {
+        gap: 0.8rem;
+    }
+    
+    .redes-sociais a {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+    
+    .footer-text {
+        font-size: 0.75rem;
+        padding: 0 5px;
+        margin: 0.2rem 0;
+    }
+    
+    .copyright {
+        font-size: 0.65rem;
+        padding-top: 0.6rem;
+        margin-top: 0.6rem;
+    }
+}
 }
