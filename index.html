@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achadinhos + Cupons | Descontos imperdíveis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="discount-icon">%</span>
+            <h1>Achadinhos + Cupons</h1>
+        </div>
+        <p class="slogan">Descontos imperdíveis, achados que valem ouro!</p>
+    </header>
+
+    <main>
+        <!-- Abas de navegação -->
+        <nav class="abas-navegacao">
+            <button class="aba-ativo" data-aba="destaques">
+                <i class="fas fa-bolt"></i> Destaques
+            </button>
+            <button data-aba="mais-ofertas">
+                <i class="fas fa-star"></i> Mais Ofertas
+            </button>
+        </nav>
+
+        <!-- Seção Destaques -->
+        <section id="destaques" class="produtos-container aba-conteudo aba-ativa">
+            <div class="categoria">
+                <i class="fas fa-bolt"></i>
+                <h2>Destaques da Semana</h2>
+            </div>
+            
+            <div class="produtos-grid">
+                <!-- Produto 1 -->
+                <div class="produto">
+                    <div class="badge trending">🔥 -50%</div>
+                    <img src="imagens/produto1.jpg" alt="Air Fryer">
+                    <div class="produto-info">
+                        <h3>Air Fryer 5L Turbo</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 499,90</span>
+                            <span class="preco-atual">R$ 249,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_1" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 2 -->
+                <div class="produto">
+                    <div class="badge">-30%</div>
+                    <img src="imagens/produto2.jpg" alt="Smartphone">
+                    <div class="produto-info">
+                        <h3>Smartphone Premium</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 2.799,90</span>
+                            <span class="preco-atual">R$ 1.959,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_2" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 3 -->
+                <div class="produto">
+                    <div class="badge">-45%</div>
+                    <img src="imagens/produto3.jpg" alt="Fone Bluetooth">
+                    <div class="produto-info">
+                        <h3>Fone Bluetooth Pro</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 399,90</span>
+                            <span class="preco-atual">R$ 219,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_3" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 4 -->
+                <div class="produto">
+                    <div class="badge">-60%</div>
+                    <img src="imagens/produto4.jpg" alt="Smartwatch">
+                    <div class="produto-info">
+                        <h3>Smartwatch Fitness</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 599,90</span>
+                            <span class="preco-atual">R$ 239,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_4" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 5 -->
+                <div class="produto">
+                    <div class="badge">-55%</div>
+                    <img src="imagens/produto5.jpg" alt="Tablet">
+                    <div class="produto-info">
+                        <h3>Tablet 10" 128GB</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 1.299,90</span>
+                            <span class="preco-atual">R$ 584,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_5" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 6 -->
+                <div class="produto">
+                    <div class="badge">-40%</div>
+                    <img src="imagens/produto6.jpg" alt="Caixa de Som">
+                    <div class="produto-info">
+                        <h3>Caixa de Som Bluetooth</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 349,90</span>
+                            <span class="preco-atual">R$ 209,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_6" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Mais Ofertas -->
+        <section id="mais-ofertas" class="produtos-container aba-conteudo">
+            <div class="categoria">
+                <i class="fas fa-star"></i>
+                <h2>Mais Ofertas Imperdíveis</h2>
+            </div>
+            
+            <div class="produtos-grid">
+                <!-- Produto 7 -->
+                <div class="produto">
+                    <div class="badge">-35%</div>
+                    <img src="imagens/produto7.jpg" alt="Notebook">
+                    <div class="produto-info">
+                        <h3>Notebook Ultra Slim</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 3.499,90</span>
+                            <span class="preco-atual">R$ 2.274,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_7" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 8 -->
+                <div class="produto">
+                    <div class="badge">-40%</div>
+                    <img src="imagens/produto8.jpg" alt="Câmera Digital">
+                    <div class="produto-info">
+                        <h3>Câmera Digital 20MP</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 1.199,90</span>
+                            <span class="preco-atual">R$ 719,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_8" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 9 -->
+                <div class="produto">
+                    <div class="badge">-25%</div>
+                    <img src="imagens/produto9.jpg" alt="Aspirador Robô">
+                    <div class="produto-info">
+                        <h3>Aspirador Robô Inteligente</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 1.599,90</span>
+                            <span class="preco-atual">R$ 1.199,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_9" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 10 -->
+                <div class="produto">
+                    <div class="badge">-30%</div>
+                    <img src="imagens/produto10.jpg" alt="Monitor">
+                    <div class="produto-info">
+                        <h3>Monitor Gamer 27"</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 1.899,90</span>
+                            <span class="preco-atual">R$ 1.329,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_10" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 11 -->
+                <div class="produto">
+                    <div class="badge">-50%</div>
+                    <img src="imagens/produto11.jpg" alt="Headphone">
+                    <div class="produto-info">
+                        <h3>Headphone Wireless</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 599,90</span>
+                            <span class="preco-atual">R$ 299,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_11" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 12 -->
+                <div class="produto">
+                    <div class="badge">-20%</div>
+                    <img src="imagens/produto12.jpg" alt="Impressora">
+                    <div class="produto-info">
+                        <h3>Impressora Multifuncional</h3>
+                        <div class="precos">
+                            <span class="preco-antigo">R$ 899,90</span>
+                            <span class="preco-atual">R$ 719,90</span>
+                        </div>
+                        <a href="LINK_AFILIADO_12" target="_blank" class="btn-comprar">
+                            <i class="fas fa-shopping-cart"></i> Comprar Agora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo-footer">
+                <span class="discount-icon">%</span>
+                <h3>Achadinhos + Cupons</h3>
+            </div>
+            <div class="redes-sociais">
+                <a href="LINK_INSTAGRAM" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="LINK_WHATSAPP" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p>Os melhores descontos da internet em um só lugar!</p>
+        </div>
+        <div class="copyright">
+            © 2024 Achadinhos + Cupons | Todos os direitos reservados
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const abas = document.querySelectorAll('[data-aba]');
+            
+            abas.forEach(aba => {
+                aba.addEventListener('click', function() {
+                    // Remove a classe ativa de todas as abas
+                    document.querySelectorAll('.abas-navegacao button').forEach(b => {
+                        b.classList.remove('aba-ativo');
+                    });
+                    
+                    // Esconde todos os conteúdos
+                    document.querySelectorAll('.aba-conteudo').forEach(conteudo => {
+                        conteudo.classList.remove('aba-ativa');
+                    });
+                    
+                    // Ativa a aba clicada
+                    this.classList.add('aba-ativo');
+                    const abaAlvo = this.getAttribute('data-aba');
+                    document.getElementById(abaAlvo).classList.add('aba-ativa');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
