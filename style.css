@@ -14,22 +14,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
-html, body {
-    height: 100%;
-}
-
 body {
     background-color: var(--rosa-claro);
     color: var(--roxo-principal);
     line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-main {
-    flex: 1;
-    padding-bottom: 2rem;
 }
 
 /* Header */
@@ -282,37 +270,33 @@ h1 {
 footer {
     background: linear-gradient(135deg, var(--roxo-escuro), #2a1245);
     color: white;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 1rem;
     text-align: center;
-    margin-top: auto;
-    width: 100%;
+    margin-top: 2rem;
 }
 
 .footer-content {
-    max-width: 1000px;
+    max-width: 800px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
 }
 
 .logo-footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 1rem;
 }
 
 .logo-footer .discount-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
     animation: none;
 }
 
 .logo-footer h3 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
 }
 
@@ -320,41 +304,25 @@ footer {
     display: flex;
     justify-content: center;
     gap: 1.5rem;
+    margin: 1.2rem 0;
 }
 
 .redes-sociais a {
     color: white;
     font-size: 1.5rem;
     transition: all 0.3s;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .redes-sociais a:hover {
     color: var(--rosa-destaque);
     transform: translateY(-3px);
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.footer-text {
-    max-width: 600px;
-    margin: 0 auto;
-    font-size: 0.95rem;
-    line-height: 1.5;
 }
 
 .copyright {
-    padding-top: 1.5rem;
-    margin-top: 1.5rem;
+    padding-top: 1.2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
     font-size: 0.8rem;
-    opacity: 0.8;
-    width: 100%;
+    opacity: 0.7;
 }
 
 /* Ajustes para tablet */
@@ -365,18 +333,6 @@ footer {
     
     .categoria h2 {
         font-size: 1.4rem;
-    }
-    
-    footer {
-        padding: 1.5rem 1rem;
-    }
-    
-    .footer-content {
-        gap: 1.2rem;
-    }
-    
-    .logo-footer h3 {
-        font-size: 1.3rem;
     }
 }
 
@@ -441,138 +397,15 @@ footer {
         font-size: 0.85rem;
     }
     
-    /* ... (todo o CSS anterior permanece igual até o footer) ... */
-
-/* Footer */
-footer {
-    background: linear-gradient(135deg, var(--roxo-escuro), #2a1245);
-    color: white;
-    padding: 1.5rem 1rem;
-    text-align: center;
-    margin-top: auto;
-    width: 100%;
-}
-
-.footer-content {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-}
-
-.logo-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.logo-footer .discount-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
-    animation: none;
-}
-
-.logo-footer h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-.redes-sociais {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-}
-
-.redes-sociais a {
-    color: white;
-    font-size: 1.3rem;
-    transition: all 0.3s;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.redes-sociais a:hover {
-    color: var(--rosa-destaque);
-    transform: translateY(-3px);
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.footer-text {
-    max-width: 500px;
-    margin: 0 auto;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.copyright {
-    padding-top: 1rem;
-    margin-top: 1rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.75rem;
-    opacity: 0.8;
-    width: 100%;
-}
-
-/* Ajustes para tablet */
-@media (max-width: 768px) {
-    footer {
-        padding: 1.2rem 1rem;
-    }
-}
-
-/* Versão mobile compacta */
-@media (max-width: 480px) {
-    footer {
-        padding: 0.8rem 0.5rem;
-    }
-    
     .footer-content {
-        gap: 0.6rem;
-    }
-    
-    .logo-footer {
-        gap: 6px;
-    }
-    
-    .logo-footer .discount-icon {
-        width: 26px;
-        height: 26px;
-        font-size: 0.8rem;
+        padding: 0 0.5rem;
     }
     
     .logo-footer h3 {
-        font-size: 1rem;
-    }
-    
-    .redes-sociais {
-        gap: 0.8rem;
+        font-size: 1.1rem;
     }
     
     .redes-sociais a {
-        width: 30px;
-        height: 30px;
-        font-size: 1rem;
+        font-size: 1.3rem;
     }
-    
-    .footer-text {
-        font-size: 0.75rem;
-        padding: 0 5px;
-        margin: 0.2rem 0;
-    }
-    
-    .copyright {
-        font-size: 0.65rem;
-        padding-top: 0.6rem;
-        margin-top: 0.6rem;
-    }
-}
 }
