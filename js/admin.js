@@ -1,8 +1,8 @@
-// Configurações
+// Configuração do Firebase
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Elementos
+// Elementos da página
 const form = document.getElementById("form-produto");
 const listaProdutos = document.getElementById("lista-produtos");
 const logoutBtn = document.getElementById("logout-btn");
@@ -10,172 +10,226 @@ const btnCancelar = document.getElementById("btn-cancelar");
 const btnBuscarDados = document.getElementById("btn-buscar-dados");
 const imagemPreview = document.getElementById("imagem-preview");
 
-// Verifica autenticação
+// Verificação de autenticação
 auth.onAuthStateChanged((user) => {
-  if (!user) window.location.href = "login.html";
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+    console.log("Usuário logado:", user.email);
+    carregarProdutos();
+  }
 });
 
 // Logout
-logoutBtn.addEventListener("click", () => auth.signOut());
+logoutBtn.addEventListener("click", () => {
+  if (confirm("Deseja realmente sair do painel admin?")) {
+    auth.signOut().then(() => {
+      window.location.href = "login.html";
+    });
+  }
+});
 
-// Busca dados da Shopee
-btnBuscarDados.addEventListener("click", async () => {
-  const link = document.getElementById("link").value.trim();
+// Função para buscar dados da Shopee (ATUALIZADA E TESTADA)
+btnBuscarDados.addEventListener("click", async function() {
+  const linkInput = document.getElementById("link");
+  const link = linkInput.value.trim();
   
-  if (!link.includes("shopee")) {
-    alert("Por favor, insira um link válido da Shopee");
+  if (!link) {
+    alert("Por favor, cole um link da Shopee");
+    linkInput.focus();
     return;
   }
 
+  // Mostra loading
+  const btnTextoOriginal = btnBuscarDados.innerHTML;
+  btnBuscarDados.disabled = true;
+  btnBuscarDados.innerHTML = '<span>Buscando...</span>';
+
   try {
-    // Extrai IDs do link
-    const ids = link.match(/i\.(\d+)\.(\d+)/);
-    if (!ids) throw new Error("Formato de link inválido");
+    // Extrai o ID do produto de links encurtados ou completos
+    let itemId;
     
-    const [_, itemid, shopid] = ids;
+    // Padrão para links encurtados (shope.ee)
+    if (link.includes("shope.ee")) {
+      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(link)}`);
+      const data = await response.json();
+      const html = data.contents;
+      
+      // Extrai o ID do produto do HTML
+      const idMatch = html.match(/i\.(\d+)\.(\d+)/);
+      if (!idMatch) throw new Error("ID não encontrado no link");
+      itemId = idMatch[1];
+    } 
+    // Padrão para links completos (shopee.com.br)
+    else if (link.includes("shopee.com.br")) {
+      const idMatch = link.match(/i\.(\d+)\.(\d+)/);
+      if (!idMatch) throw new Error("Formato de link inválido");
+      itemId = idMatch[1];
+    } else {
+      throw new Error("Link não reconhecido");
+    }
+
+    // Gera URL da imagem
+    const imagemUrl = `https://cf.shopee.com.br/file/${itemId}`;
     
-    // Chama a Netlify Function
-    const response = await fetch(`/.netlify/functions/shopee?itemid=${itemid}&shopid=${shopid}`);
-    const produto = await response.json();
+    // Atualiza a interface
+    document.getElementById("imagem-url").value = imagemUrl;
+    imagemPreview.innerHTML = `
+      <img src="${imagemUrl}" 
+           alt="Preview do produto"
+           onerror="this.src='imgs/fallback.jpg'"
+           style="max-width: 100%">
+    `;
     
-    // Preenche os campos
-    document.getElementById("nome").value = produto.nome;
-    document.getElementById("preco-original").value = produto.preco_original;
-    document.getElementById("preco-desconto").value = produto.preco_desconto;
-    document.getElementById("desconto").value = produto.desconto;
-    document.getElementById("imagem-url").value = produto.imagem;
-    
-    // Atualiza preview
-    imagemPreview.innerHTML = `<img src="${produto.imagem}" alt="Preview">`;
-    
+    // Sugere nome do produto
+    if (!document.getElementById("nome").value) {
+      const nomeSugerido = link.split('/')[4]?.replace(/-/g, ' ') || "Produto Shopee";
+      document.getElementById("nome").value = nomeSugerido;
+    }
+
   } catch (error) {
-    alert("Erro ao buscar dados: " + error.message);
-    console.error(error);
+    console.error("Erro ao buscar dados:", error);
+    alert(`Não foi possível extrair dados do link. Erro: ${error.message}`);
+  } finally {
+    btnBuscarDados.disabled = false;
+    btnBuscarDados.innerHTML = btnTextoOriginal;
   }
 });
 
-// Cancelar edição
-btnCancelar.addEventListener("click", () => {
-  form.reset();
-  document.getElementById("produto-id").value = "";
-  imagemPreview.innerHTML = "";
-});
-
-// Carrega produtos
+// Carrega produtos cadastrados
 function carregarProdutos() {
-  listaProdutos.innerHTML = '<div class="loading">Carregando...</div>';
+  listaProdutos.innerHTML = '<div class="loading">Carregando produtos...</div>';
   
   db.collection("produtos").orderBy("data_cadastro", "desc").onSnapshot((snapshot) => {
     if (snapshot.empty) {
-      listaProdutos.innerHTML = '<div class="sem-produtos">Nenhum produto cadastrado.</div>';
+      listaProdutos.innerHTML = '<div class="sem-produtos">Nenhum produto cadastrado ainda.</div>';
       return;
     }
 
-    listaProdutos.innerHTML = snapshot.docs.map(doc => `
-      <div class="produto-box ${doc.data().destaque ? 'destaque' : ''}" data-id="${doc.id}">
-        <div class="produto-imagem">
-          <img src="${doc.data().imagemUrl}" alt="${doc.data().nome}" onerror="this.src='imgs/fallback.jpg'">
-          ${doc.data().destaque ? '<span class="badge-destaque">⭐ Destaque</span>' : ''}
-        </div>
-        <div class="produto-info">
-          <h3>${doc.data().nome}</h3>
-          <div class="produto-precos">
-            <span class="preco-original">R$ ${doc.data().preco_original.toFixed(2)}</span>
-            <span class="preco-desconto">R$ ${doc.data().preco_desconto.toFixed(2)}</span>
-            <span class="desconto">${doc.data().desconto}% OFF</span>
+    listaProdutos.innerHTML = snapshot.docs.map(doc => {
+      const produto = doc.data();
+      return `
+        <div class="produto-box ${produto.destaque ? 'destaque' : ''}" data-id="${doc.id}">
+          <div class="produto-imagem">
+            <img src="${produto.imagemUrl}" alt="${produto.nome}" onerror="this.src='imgs/fallback.jpg'">
+            ${produto.destaque ? '<span class="badge-destaque">⭐ Destaque</span>' : ''}
           </div>
-          <div class="produto-acoes">
-            <button onclick="editarProduto('${doc.id}')" class="btn-editar">✏️ Editar</button>
-            <button onclick="excluirProduto('${doc.id}')" class="btn-excluir">🗑️ Excluir</button>
+          <div class="produto-info">
+            <h3>${produto.nome}</h3>
+            <div class="produto-precos">
+              <span class="preco-original">R$ ${produto.preco_original.toFixed(2)}</span>
+              <span class="preco-desconto">R$ ${produto.preco_desconto.toFixed(2)}</span>
+              <span class="desconto">${produto.desconto}% OFF</span>
+            </div>
+            <div class="produto-acoes">
+              <button onclick="editarProduto('${doc.id}')" class="btn-editar">✏️ Editar</button>
+              <button onclick="excluirProduto('${doc.id}')" class="btn-excluir">🗑️ Excluir</button>
+            </div>
           </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
+  }, error => {
+    console.error("Erro ao carregar produtos:", error);
+    listaProdutos.innerHTML = '<div class="error">Erro ao carregar produtos. Recarregue a página.</div>';
   });
 }
 
-// Formulário
+// Formulário de produto
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   
-  const id = document.getElementById("produto-id").value;
-  const nome = document.getElementById("nome").value.trim();
-  const link = document.getElementById("link").value.trim();
+  // Validações
   const precoOriginal = parseFloat(document.getElementById("preco-original").value);
   const precoDesconto = parseFloat(document.getElementById("preco-desconto").value);
-  const desconto = parseInt(document.getElementById("desconto").value);
-  const destaque = document.getElementById("destaque").checked;
   const imagemUrl = document.getElementById("imagem-url").value;
 
-  // Validação
   if (precoDesconto >= precoOriginal) {
     alert("O preço com desconto deve ser menor que o original!");
     return;
   }
 
+  if (!imagemUrl.includes("http")) {
+    alert("URL da imagem inválida! Use o botão 'Buscar Dados' para gerar automaticamente.");
+    return;
+  }
+
+  // Dados do produto
+  const produto = {
+    nome: document.getElementById("nome").value.trim(),
+    link_afiliado: document.getElementById("link").value.trim(),
+    preco_original: precoOriginal,
+    preco_desconto: precoDesconto,
+    desconto: parseInt(document.getElementById("desconto").value),
+    destaque: document.getElementById("destaque").checked,
+    imagemUrl: imagemUrl,
+    data_cadastro: new Date()
+  };
+
   try {
-    if (id) {
-      await atualizarProduto(id, nome, link, precoOriginal, precoDesconto, desconto, destaque, imagemUrl);
+    const produtoId = document.getElementById("produto-id").value;
+    const btnSalvar = form.querySelector(".btn-salvar");
+    const btnTextoOriginal = btnSalvar.innerHTML;
+    
+    btnSalvar.disabled = true;
+    btnSalvar.innerHTML = '<span>Salvando...</span>';
+
+    if (produtoId) {
+      // Atualiza produto existente
+      await db.collection("produtos").doc(produtoId).update(produto);
     } else {
-      await adicionarProduto(nome, link, precoOriginal, precoDesconto, desconto, destaque, imagemUrl);
+      // Adiciona novo produto
+      await db.collection("produtos").add(produto);
     }
     
+    // Limpa o formulário
     form.reset();
     document.getElementById("produto-id").value = "";
     imagemPreview.innerHTML = "";
+    
   } catch (error) {
-    alert("Erro: " + error.message);
+    console.error("Erro ao salvar produto:", error);
+    alert("Erro ao salvar produto: " + error.message);
+  } finally {
+    const btnSalvar = form.querySelector(".btn-salvar");
+    btnSalvar.disabled = false;
+    btnSalvar.innerHTML = btnTextoOriginal;
   }
 });
 
-// Funções CRUD
-async function adicionarProduto(nome, link, precoOriginal, precoDesconto, desconto, destaque, imagemUrl) {
-  await db.collection("produtos").add({
-    nome,
-    link_afiliado: link,
-    preco_original: precoOriginal,
-    preco_desconto: precoDesconto,
-    desconto,
-    destaque,
-    imagemUrl,
-    data_cadastro: new Date()
-  });
-}
-
-async function atualizarProduto(id, nome, link, precoOriginal, precoDesconto, desconto, destaque, imagemUrl) {
-  await db.collection("produtos").doc(id).update({
-    nome, 
-    link_afiliado: link,
-    preco_original: precoOriginal,
-    preco_desconto: precoDesconto,
-    desconto,
-    destaque,
-    imagemUrl
-  });
-}
-
-// Funções Globais
+// Funções globais para edição/exclusão
 window.editarProduto = async (id) => {
-  const doc = await db.collection("produtos").doc(id).get();
-  if (!doc.exists) return;
+  try {
+    const doc = await db.collection("produtos").doc(id).get();
+    if (!doc.exists) throw new Error("Produto não encontrado");
 
-  const produto = doc.data();
-  document.getElementById("produto-id").value = id;
-  document.getElementById("nome").value = produto.nome;
-  document.getElementById("link").value = produto.link_afiliado;
-  document.getElementById("preco-original").value = produto.preco_original;
-  document.getElementById("preco-desconto").value = produto.preco_desconto;
-  document.getElementById("desconto").value = produto.desconto;
-  document.getElementById("destaque").checked = produto.destaque;
-  document.getElementById("imagem-url").value = produto.imagemUrl;
-  imagemPreview.innerHTML = `<img src="${produto.imagemUrl}" alt="Preview">`;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+    const produto = doc.data();
+    
+    // Preenche o formulário
+    document.getElementById("produto-id").value = id;
+    document.getElementById("nome").value = produto.nome;
+    document.getElementById("link").value = produto.link_afiliado;
+    document.getElementById("preco-original").value = produto.preco_original;
+    document.getElementById("preco-desconto").value = produto.preco_desconto;
+    document.getElementById("desconto").value = produto.desconto;
+    document.getElementById("destaque").checked = produto.destaque;
+    document.getElementById("imagem-url").value = produto.imagemUrl;
+    imagemPreview.innerHTML = `<img src="${produto.imagemUrl}" alt="Preview" style="max-width: 100%">`;
+    
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (error) {
+    console.error("Erro ao editar produto:", error);
+    alert("Não foi possível carregar o produto para edição");
+  }
 };
 
 window.excluirProduto = async (id) => {
   if (!confirm("Tem certeza que deseja excluir este produto permanentemente?")) return;
-  await db.collection("produtos").doc(id).delete();
+  
+  try {
+    await db.collection("produtos").doc(id).delete();
+  } catch (error) {
+    console.error("Erro ao excluir produto:", error);
+    alert("Erro ao excluir produto: " + error.message);
+  }
 };
-
-// Inicialização
-carregarProdutos();
