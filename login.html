@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Achadinho Cupons</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css"> <!-- Novo arquivo CSS -->
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="login-header">
+        <img src="imgs/logo.png" alt="Logo Achadinho Cupons" class="login-logo">
+        <h1>Acesso Restrito</h1>
+        <p>Gerencie seus cupons e ofertas</p>
+      </div>
+
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="email">Usuário</label>
+          <input type="email" id="email" placeholder="seu@email.com" required>
+          <span class="input-icon">👥</span>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="••••••••" required>
+          <span class="input-icon">🔒</span>
+        </div>
+
+        <button type="submit" class="btn-login">
+          <span class="btn-text">Entrar</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Problemas para acessar? <a href="#">Clique aqui</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
