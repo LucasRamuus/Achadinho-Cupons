@@ -1,7 +1,6 @@
 package com.achadinhos_cupons.backend_api.repository;
 
 import com.achadinhos_cupons.backend_api.domain.entities.Product;
-import com.achadinhos_cupons.backend_api.infra.gateways.persistence.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
