@@ -1,7 +1,6 @@
 package com.achadinhos_cupons.backend_api.repository;
 
 import com.achadinhos_cupons.backend_api.domain.entities.Admin;
-import com.achadinhos_cupons.backend_api.infra.gateways.persistence.AdminJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

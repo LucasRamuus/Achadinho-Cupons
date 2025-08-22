@@ -14,4 +14,8 @@ public interface ProductGateway {
     List<Product> findAll();
 
     void deleteById(Long id);
+
+    Product update(Product product);
+
+    boolean existsById(Long id);
 }

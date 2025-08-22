@@ -18,12 +18,17 @@ public class Product {
     private String description;
     private Double discountPercentage;
     private String image;
+    private String affiliateLink;
 
     // === Constructor (optional) ===
     public Product() {
     }
 
-    public Product(Long id, String name, Double price, Double oldPrice, String description, Double discountPercentage, String image) {
+
+
+
+
+    public Product(Long id, String name, Double price, Double oldPrice, String description, Double discountPercentage, String image, String affiliateLink ) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -31,6 +36,7 @@ public class Product {
         this.description = description;
         this.discountPercentage = discountPercentage;
         this.image = image;
+        this.affiliateLink = affiliateLink;
     }
 
     public Long getId() {
@@ -57,6 +63,10 @@ public class Product {
 
     public String getImage() {
         return image;
+    }
+
+    public String getAffiliateLink() {
+        return affiliateLink;
     }
 
     public void setId(Long id) {
@@ -110,6 +120,13 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image != null ? image.trim() : null;
+    }
+
+    public void setAffiliateLink(String affiliateLink) {
+        if (affiliateLink == null || affiliateLink.trim().isEmpty()) {
+            throw new IllegalArgumentException("Affiliate link cannot be empty.");
+        }
+        this.affiliateLink = affiliateLink.trim();
     }
 
 }
