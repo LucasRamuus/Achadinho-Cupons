@@ -15,13 +15,13 @@ class AdminTest {
 
     @BeforeEach
     void setUp() {
-        admin = new Admin(1L, "admin_test", "senha123");
+        admin = new Admin(00000000-0000-0000-0000-000000000000, "admin_test", "senha123");
     }
 
     // Teste de criação e atributos básicos
     @Test
     void whenCreatingAdmin_thenFieldsAreSetCorrectly() {
-        assertThat(admin.getId()).isEqualTo(1L);
+        assertThat(admin.getId()).isEqualTo(00000000-0000-0000-0000-000000000000);
         assertThat(admin.getUsername()).isEqualTo("admin_test");
         assertThat(admin.getPasswordHash()).isNotEqualTo("senha123"); // Deve estar hasheado
     }

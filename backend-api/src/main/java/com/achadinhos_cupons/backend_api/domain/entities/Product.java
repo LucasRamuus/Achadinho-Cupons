@@ -4,14 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class Product {
 
     // === Fields ===
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private String name;
     private Double price;
     private Double oldPrice;
@@ -21,14 +22,10 @@ public class Product {
     private String affiliateLink;
 
     // === Constructor (optional) ===
-    public Product() {
+    public Product(String uuid, String camiseta, double v, double v1, String camisetaDeAlgodão, double v2, String image) {
     }
 
-
-
-
-
-    public Product(Long id, String name, Double price, Double oldPrice, String description, Double discountPercentage, String image, String affiliateLink ) {
+    public Product(UUID id, String name, Double price, Double oldPrice, String description, Double discountPercentage, String image, String affiliateLink ) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -37,9 +34,10 @@ public class Product {
         this.discountPercentage = discountPercentage;
         this.image = image;
         this.affiliateLink = affiliateLink;
+
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -69,10 +67,16 @@ public class Product {
         return affiliateLink;
     }
 
-    public void setId(Long id) {
-        if (id != null && id < 0) {
-            throw new IllegalArgumentException("ID must be positive.");
+    public void setId(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
         }
+
+        // Verifica se é um UUID válido (não o nil UUID)
+        if (id.equals(new UUID(0L, 0L))) { // UUID nil: 00000000-0000-0000-0000-000000000000
+            throw new IllegalArgumentException("ID cannot be nil UUID");
+        }
+
         this.id = id;
     }
 

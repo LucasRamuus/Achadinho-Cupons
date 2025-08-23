@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.UUID;
+
 @Entity
 @Table(
         name = "admin",
@@ -16,8 +18,8 @@ public class Admin {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String username;
@@ -29,13 +31,13 @@ public class Admin {
     protected Admin() {}
 
     /** Construtor de domínio (gera o hash automaticamente) */
-    public Admin(Long id, String username, String rawPassword) {
+    public Admin(UUID id, String username, String rawPassword) {
         this.id = id;
         setUsername(username);
         setPassword(rawPassword);
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
