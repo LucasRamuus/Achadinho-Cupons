@@ -1,5 +1,7 @@
 package com.achadinhos_cupons.backend_api.application.dtos.product;
 
+import java.util.UUID;
+
 public class ProductResponseDTO {
 
     private Long id;
@@ -11,7 +13,7 @@ public class ProductResponseDTO {
     private String image;
     private String affiliateLink;
 
-    public ProductResponseDTO(Long id, String name, Double price, Double oldPrice, String description,
+    public ProductResponseDTO(UUID id, String name, Double price, Double oldPrice, String description,
                               Double discountPercentage, String image, String affiliateLink) {
         this.id = id;
         this.name = name;

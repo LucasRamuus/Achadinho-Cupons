@@ -8,7 +8,7 @@ class ProductTest {
     @Test
     void shouldCreateValidProduct() {
         Product product = new Product(
-                1L,
+                "00000000-0000-0000-0000-000000000000",
                 "Camiseta",
                 50.0,
                 70.0,
@@ -28,38 +28,34 @@ class ProductTest {
 
     @Test
     void shouldThrowExceptionWhenNameIsEmpty() {
-        Product product = new Product();
+        Product product = new Product("00000000-0000-0000-0000-000000000000", "Camiseta", 50.0, 70.0, "Camiseta de algodão", 20.0, "imagem.jpg");
         assertThrows(IllegalArgumentException.class, () -> product.setName(""));
     }
 
     @Test
     void shouldThrowExceptionWhenPriceIsNegative() {
-        Product product = new Product();
+        Product product = new Product("00000000-0000-0000-0000-000000000000", "Camiseta", 50.0, 70.0, "Camiseta de algodão", 20.0, "imagem.jpg");
         assertThrows(IllegalArgumentException.class, () -> product.setPrice(-10.0));
     }
 
     @Test
     void shouldThrowExceptionWhenOldPriceIsNegative() {
-        Product product = new Product();
+        Product product = new Product("00000000-0000-0000-0000-000000000000", "Camiseta", 50.0, 70.0, "Camiseta de algodão", 20.0, "imagem.jpg");
         assertThrows(IllegalArgumentException.class, () -> product.setOldPrice(-5.0));
     }
 
     @Test
     void shouldThrowExceptionWhenDiscountIsGreaterThan100() {
-        Product product = new Product();
+        Product product = new Product("00000000-0000-0000-0000-000000000000", "Camiseta", 50.0, 70.0, "Camiseta de algodão", 20.0, "imagem.jpg");
         assertThrows(IllegalArgumentException.class, () -> product.setDiscountPercentage(150.0));
     }
 
     @Test
     void shouldSetDiscountToZeroWhenNull() {
-        Product product = new Product();
+        Product product = new Product("00000000-0000-0000-0000-000000000000", "Camiseta", 50.0, 70.0, "Camiseta de algodão", 20.0, "imagem.jpg");
         product.setDiscountPercentage(null);
         assertEquals(0.0, product.getDiscountPercentage());
     }
 
-    @Test
-    void shouldThrowExceptionWhenIdIsNegative() {
-        Product product = new Product();
-        assertThrows(IllegalArgumentException.class, () -> product.setId(-1L));
-    }
+
 }

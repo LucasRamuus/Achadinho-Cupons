@@ -5,6 +5,7 @@ import com.achadinhos_cupons.backend_api.domain.entities.Product;
 import com.achadinhos_cupons.backend_api.domain.gateways.ProductGateway;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class GetProductByIdUseCase {
 
@@ -14,7 +15,7 @@ public class GetProductByIdUseCase {
         this.productRepository = productRepository;
     }
 
-    public ProductResponseDTO execute(Long id) {
+    public ProductResponseDTO execute(UUID id) {
         Optional<Product> productOpt = productRepository.findById(id);
 
         if (productOpt.isEmpty()) {

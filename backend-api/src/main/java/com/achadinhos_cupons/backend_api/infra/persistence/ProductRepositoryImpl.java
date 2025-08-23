@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class ProductRepositoryImpl implements ProductGateway {
@@ -22,7 +23,7 @@ public class ProductRepositoryImpl implements ProductGateway {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findById(UUID id) {
         return jpaRepository.findById(id);
     }
 
@@ -32,7 +33,7 @@ public class ProductRepositoryImpl implements ProductGateway {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         jpaRepository.deleteById(id);
     }
 
@@ -42,7 +43,7 @@ public class ProductRepositoryImpl implements ProductGateway {
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean existsById(UUID id) {
         return false;
     }
 }
