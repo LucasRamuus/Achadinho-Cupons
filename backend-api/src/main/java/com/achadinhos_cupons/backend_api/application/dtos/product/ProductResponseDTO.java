@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class ProductResponseDTO {
 
-    private Long id;
+    private UUID id;
     private String name;
     private Double price;
     private Double oldPrice;
@@ -26,7 +26,7 @@ public class ProductResponseDTO {
     }
 
     // getters
-    public Long getId() { return id; }
+    public UUID getId() { return id; }
     public String getName() { return name; }
     public Double getPrice() { return price; }
     public Double getOldPrice() { return oldPrice; }

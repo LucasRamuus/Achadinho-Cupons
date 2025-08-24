@@ -39,11 +39,11 @@ public class ProductRepositoryImpl implements ProductGateway {
 
     @Override
     public Product update(Product product) {
-        return null;
+        return jpaRepository.save(product); //
     }
 
     @Override
     public boolean existsById(UUID id) {
-        return false;
+        return jpaRepository.existsById(id); //
     }
 }
