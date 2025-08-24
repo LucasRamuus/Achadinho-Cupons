@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProductJpaRepository extends JpaRepository<Product, Long> {
+public interface ProductJpaRepository extends JpaRepository<Product, UUID> {
     void deleteById(UUID id);
 
     Optional<Product> findById(UUID id);

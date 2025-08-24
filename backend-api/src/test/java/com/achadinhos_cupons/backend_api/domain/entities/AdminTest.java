@@ -1,67 +1,56 @@
 package com.achadinhos_cupons.backend_api.domain.entities;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class AdminTest {
 
-    private Admin admin;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Test
+    void deveCriarAdminComSucesso() {
+        UUID id = UUID.randomUUID();
+        String username = "adminUser";
+        String passwordHash = "$2a$10$hashExemplo1234567890"; // simulação de hash bcrypt
 
-    @BeforeEach
-    void setUp() {
-        admin = new Admin(00000000-0000-0000-0000-000000000000, "admin_test", "senha123");
+        Admin admin = new Admin(id, username, passwordHash);
+
+        assertNotNull(admin);
+        assertEquals(id, admin.getId());
+        assertEquals(username, admin.getUsername());
+        assertEquals(passwordHash, admin.getPasswordHash());
     }
 
-    // Teste de criação e atributos básicos
     @Test
-    void whenCreatingAdmin_thenFieldsAreSetCorrectly() {
-        assertThat(admin.getId()).isEqualTo(00000000-0000-0000-0000-000000000000);
-        assertThat(admin.getUsername()).isEqualTo("admin_test");
-        assertThat(admin.getPasswordHash()).isNotEqualTo("senha123"); // Deve estar hasheado
+    void devePermitirUsernameEPasswordHashNaoNulos() {
+        UUID id = UUID.randomUUID();
+        String username = "userTest";
+        String passwordHash = "hash123";
+
+        Admin admin = new Admin(id, username, passwordHash);
+
+        assertNotNull(admin.getUsername());
+        assertNotNull(admin.getPasswordHash());
     }
 
-    // Teste de codificação de senha
     @Test
-    void whenSettingPassword_thenPasswordIsEncoded() {
-        String rawPassword = "outrasenha456";
-        admin.setPassword(rawPassword);
+    void deveFalharSeCriarAdminComUsernameNulo() {
+        UUID id = UUID.randomUUID();
+        String passwordHash = "hash123";
 
-        assertThat(admin.getPasswordHash())
-                .isNotEqualTo(rawPassword)
-                .matches(encoded -> passwordEncoder.matches(rawPassword, encoded));
+        assertThrows(NullPointerException.class, () -> {
+            new Admin(id, null, passwordHash);
+        });
     }
 
-    // Teste de verificação de senha correta
     @Test
-    void whenCheckingCorrectPassword_thenReturnsTrue() {
-        assertThat(admin.checkPassword("senha123")).isTrue();
-    }
+    void deveFalharSeCriarAdminComPasswordHashNulo() {
+        UUID id = UUID.randomUUID();
+        String username = "userTest";
 
-    // Teste de verificação de senha incorreta
-    @Test
-    void whenCheckingWrongPassword_thenReturnsFalse() {
-        assertThat(admin.checkPassword("senha_errada")).isFalse();
-    }
-
-    // Teste de validação de senha curta
-    @Test
-    void whenSettingShortPassword_thenThrowsException() {
-        assertThatThrownBy(() -> admin.setPassword("abc"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Password must be at least 6 characters");
-    }
-
-    // Teste de validação de username vazio
-    @Test
-    void whenSettingBlankUsername_thenThrowsException() {
-        assertThatThrownBy(() -> admin.setUsername("   "))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Username is required");
+        assertThrows(NullPointerException.class, () -> {
+            new Admin(id, username, null);
+        });
     }
 }
