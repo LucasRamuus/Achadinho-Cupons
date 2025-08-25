@@ -4,7 +4,9 @@ import com.achadinhos_cupons.backend_api.application.dtos.product.ProductRequest
 import com.achadinhos_cupons.backend_api.application.dtos.product.ProductResponseDTO;
 import com.achadinhos_cupons.backend_api.domain.entities.Product;
 import com.achadinhos_cupons.backend_api.domain.gateways.ProductGateway;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CreateProductUseCase {
 
     private final ProductGateway productRepository;

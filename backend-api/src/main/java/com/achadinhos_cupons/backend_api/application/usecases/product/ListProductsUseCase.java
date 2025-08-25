@@ -4,10 +4,13 @@ package com.achadinhos_cupons.backend_api.application.usecases.product;
 import com.achadinhos_cupons.backend_api.application.dtos.product.ProductResponseDTO;
 import com.achadinhos_cupons.backend_api.domain.entities.Product;
 import com.achadinhos_cupons.backend_api.domain.gateways.ProductGateway;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Service
 public class ListProductsUseCase {
 
     private final ProductGateway productRepository;

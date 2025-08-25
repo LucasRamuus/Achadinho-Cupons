@@ -24,6 +24,7 @@ public class Product {
     // === Constructor (optional) ===
     public Product(String uuid, String camiseta, double v, double v1, String camisetaDeAlgodão, double v2, String image) {
     }
+    protected Product() {}
 
     public Product(UUID id, String name, Double price, Double oldPrice, String description, Double discountPercentage, String image, String affiliateLink ) {
         this.id = id;

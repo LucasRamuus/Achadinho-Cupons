@@ -1,9 +1,11 @@
 package com.achadinhos_cupons.backend_api.application.usecases.product;
 
 import com.achadinhos_cupons.backend_api.domain.gateways.ProductGateway;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class DeleteProductUseCase {
 
     private final ProductGateway productRepository;
