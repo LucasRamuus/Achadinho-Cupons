@@ -19,17 +19,25 @@ public class Admin {
     @Column(nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
     /** Construtor protegido exigido pelo JPA */
     protected Admin() {}
 
-    /** Construtor de domínio */
+    /** Construtor completo - para quando já tem ID */
     public Admin(UUID id, String username, String passwordHash) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
+    }
+
+    /** Construtor para criação inicial - CORRIGIDO */
+    public Admin(String username, String passwordHash) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        // ✅ REMOVIDO: this.id = UUID.randomUUID();
+        // Deixe o @GeneratedValue gerar o ID automaticamente
     }
 
     public UUID getId() {
@@ -42,5 +50,13 @@ public class Admin {
 
     public String getPasswordHash() {
         return passwordHash;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }
