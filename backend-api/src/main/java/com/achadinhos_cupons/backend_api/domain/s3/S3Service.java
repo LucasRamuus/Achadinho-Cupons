@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,18 +26,20 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    // Upload usando File (mantém compatibilidade)
-    public String uploadFile(File file, String key) {
+    // Upload com Content-Type
+    public String uploadFile(File file, String key, String contentType) {
         s3Client.putObject(
                 PutObjectRequest.builder()
                         .bucket(bucketName)
                         .key(key)
+                        .contentType(contentType)
                         .build(),
                 RequestBody.fromFile(file)
         );
         return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, key);
     }
 
+    // Delete arquivo específico
     public void deleteFile(String key) {
         s3Client.deleteObject(
                 DeleteObjectRequest.builder()
@@ -48,20 +49,28 @@ public class S3Service {
         );
     }
 
-    // Novo método: upload direto de MultipartFile
+    // Upload MultipartFile com key fixo
     public String uploadFile(MultipartFile multipartFile, String key) throws IOException {
-        // converte MultipartFile para File temporário
         File file = File.createTempFile("upload-", multipartFile.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(multipartFile.getBytes());
         }
-
-        // faz upload
-        String url = uploadFile(file, key);
-
-        // remove arquivo temporário
+        String url = uploadFile(file, key, multipartFile.getContentType());
         file.delete();
-
         return url;
+    }
+
+    // Delete todos os arquivos que começam com prefix
+    public void deleteFilesWithPrefix(String prefix) {
+        ListObjectsV2Request listReq = ListObjectsV2Request.builder()
+                .bucket(bucketName)
+                .prefix(prefix)
+                .build();
+
+        ListObjectsV2Response listRes = s3Client.listObjectsV2(listReq);
+
+        for (S3Object s3Object : listRes.contents()) {
+            deleteFile(s3Object.key());
+        }
     }
 }

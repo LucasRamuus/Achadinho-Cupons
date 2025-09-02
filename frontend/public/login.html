@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Achadinhos + Cupons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/frontend/assets/css/login.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-container">
+      <div class="logo">🏷️ Achadinhos + Cupons</div>
+      <p class="slogan">Descontos imperdíveis, achados que valem ouro!</p>
+      
+      <form class="login-form" onsubmit="return loginUser(event)">
+        <input type="text" id="username" placeholder="Usuário" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit" class="btn btn-primary btn-login">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function loginUser(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Aqui você faria a validação e autenticação
+      console.log('Tentativa de login:', { username, password });
+      
+      // Simulação de login (substitua pela sua lógica real)
+      const loginBtn = document.querySelector('.btn-login');
+      loginBtn.textContent = 'Entrando...';
+      loginBtn.disabled = true;
+      
+      setTimeout(() => {
+        alert('Login realizado com sucesso! (simulação)');
+        loginBtn.textContent = 'Entrar';
+        loginBtn.disabled = false;
+      }, 1500);
+      
+      return false;
+    }
+  </script>
+</body>
+</html>

@@ -8,10 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,39 +48,12 @@ public class ProductController {
             @RequestParam("affiliateLink") String affiliateLink,
             @RequestParam("file") MultipartFile file
     ) throws Exception {
-        String key = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
-        Path tempFile = Files.createTempFile("upload-", file.getOriginalFilename());
-        file.transferTo(tempFile);
-
-        // 🔹 Agora upload retorna a URL da imagem
-        String image = s3Service.uploadFile(tempFile.toFile(), key);
-
         ProductRequestDTO dto = new ProductRequestDTO(
-                name,
-                price,
-                oldPrice,
-                description,
-                discountPercentage,
-                image, // 🔹 salva a URL, não a key
-                affiliateLink
-
+                name, price, oldPrice, description, discountPercentage, null, affiliateLink
         );
-
+        dto.setFile(file);
         ProductResponseDTO product = createProductUseCase.execute(dto);
         return ResponseEntity.ok(product);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> getById(@PathVariable UUID id) {
-        ProductResponseDTO product = getProductByIdUseCase.execute(id);
-        return ResponseEntity.ok(product);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> list() {
-        List<ProductResponseDTO> products = listProductsUseCase.execute();
-        return ResponseEntity.ok(products);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -96,7 +67,6 @@ public class ProductController {
             @RequestParam("affiliateLink") String affiliateLink,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
-
         ProductRequestDTO dto = new ProductRequestDTO();
         dto.setName(name);
         dto.setPrice(price);
@@ -104,27 +74,24 @@ public class ProductController {
         dto.setDescription(description);
         dto.setDiscountPercentage(discountPercentage);
         dto.setAffiliateLink(affiliateLink);
-        dto.setFile(file); // 🔹 passa o arquivo para o use case
-
+        dto.setFile(file);
         ProductResponseDTO updatedProduct = updateProductUseCase.execute(id, dto);
         return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        // Buscar produto para pegar a URL da imagem
         ProductResponseDTO product = getProductByIdUseCase.execute(id);
 
-        // Extrair a key da URL (remover o https://bucket.s3.region.amazonaws.com/)
-        String imageUrl = product.getImage();
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            String key = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-            s3Service.deleteFile(key);
+        // Remove todas as imagens do S3 (independente da extensão)
+        if (product.getImage() != null && !product.getImage().isEmpty()) {
+            String key = "products/" + product.getId();
+            s3Service.deleteFilesWithPrefix(key);
         }
 
-        // Deletar produto do banco
+        // Remove produto do banco
         deleteProductUseCase.execute(id);
 
         return ResponseEntity.noContent().build();
     }
-    }
+}
