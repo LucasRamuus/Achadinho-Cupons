@@ -33,6 +33,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Rotas públicas (sem autenticação)
                         .requestMatchers("/auth/**").permitAll() // Login e registro
+                        .requestMatchers(HttpMethod.POST, "/admins").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/s3/imagens/upload").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/s3/imagens/download/{filename}").permitAll()
+
 
                         // LEITURA PÚBLICA: Qualquer um pode ver produtos
                         .requestMatchers(HttpMethod.GET, "/products").permitAll()
