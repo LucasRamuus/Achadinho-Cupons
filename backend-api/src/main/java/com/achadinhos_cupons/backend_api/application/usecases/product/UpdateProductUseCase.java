@@ -4,8 +4,11 @@ import com.achadinhos_cupons.backend_api.application.dtos.product.ProductRequest
 import com.achadinhos_cupons.backend_api.application.dtos.product.ProductResponseDTO;
 import com.achadinhos_cupons.backend_api.domain.entities.Product;
 import com.achadinhos_cupons.backend_api.domain.gateways.ProductGateway;
+import com.achadinhos_cupons.backend_api.domain.s3.S3Service;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,27 +16,30 @@ import java.util.UUID;
 public class UpdateProductUseCase {
 
     private final ProductGateway productRepository;
+    private final S3Service s3Service;
 
-    public UpdateProductUseCase(ProductGateway productRepository) {
+    public UpdateProductUseCase(ProductGateway productRepository, S3Service s3Service) {
         this.productRepository = productRepository;
+        this.s3Service = s3Service;
     }
 
-    public ProductResponseDTO execute(UUID id, ProductRequestDTO request) {
-        Optional<Product> productOpt = productRepository.findById(id);
+    public ProductResponseDTO execute(UUID id, ProductRequestDTO request) throws IOException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + id));
 
-        if (productOpt.isEmpty()) {
-            throw new RuntimeException("Produto não encontrado com ID: " + id);
+        // 🔹 Atualiza imagem se houver novo arquivo
+        if (request.getFile() != null && !request.getFile().isEmpty()) {
+            String key = product.getId() + getFileExtension(request.getFile().getOriginalFilename());
+            String imageUrl = s3Service.uploadFile(request.getFile(), key); // sobrescreve no S3
+            product.setImage(imageUrl);
         }
 
-        Product product = productOpt.get();
-
-        // atualizar os campos
+        // 🔹 Atualiza demais campos
         product.setName(request.getName());
         product.setPrice(request.getPrice());
         product.setOldPrice(request.getOldPrice());
         product.setDescription(request.getDescription());
         product.setDiscountPercentage(request.getDiscountPercentage());
-        product.setImage(request.getImage());
         product.setAffiliateLink(request.getAffiliateLink());
 
         Product updatedProduct = productRepository.update(product);
@@ -48,6 +54,10 @@ public class UpdateProductUseCase {
                 updatedProduct.getImage(),
                 updatedProduct.getAffiliateLink()
         );
+    }
+
+    private String getFileExtension(String filename) {
+        return filename.substring(filename.lastIndexOf('.'));
     }
 }
 
