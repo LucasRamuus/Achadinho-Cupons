@@ -6,10 +6,8 @@ import com.achadinhos_cupons.backend_api.domain.entities.Product;
 import com.achadinhos_cupons.backend_api.domain.gateways.ProductGateway;
 import com.achadinhos_cupons.backend_api.domain.s3.S3Service;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,8 +27,13 @@ public class UpdateProductUseCase {
 
         // 🔹 Atualiza imagem se houver novo arquivo
         if (request.getFile() != null && !request.getFile().isEmpty()) {
-            String key = product.getId() + getFileExtension(request.getFile().getOriginalFilename());
-            String imageUrl = s3Service.uploadFile(request.getFile(), key); // sobrescreve no S3
+            String key = "products/" + product.getId();
+
+            // Deleta qualquer arquivo antigo associado ao produto
+            s3Service.deleteFilesWithPrefix(key);
+
+            // Faz upload da nova imagem
+            String imageUrl = s3Service.uploadFile(request.getFile(), key);
             product.setImage(imageUrl);
         }
 
@@ -55,9 +58,4 @@ public class UpdateProductUseCase {
                 updatedProduct.getAffiliateLink()
         );
     }
-
-    private String getFileExtension(String filename) {
-        return filename.substring(filename.lastIndexOf('.'));
-    }
 }
-
