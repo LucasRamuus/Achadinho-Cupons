@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/frontend/assets/css/admin.css">
 </head>
+
 <body>
     <div class="admin-container">
         <!-- Sidebar -->
@@ -20,8 +22,7 @@
                 <li class="active"><a href="#"><i class="fas fa-box"></i> Produtos</a></li>
                 <li><a href="#"><i class="fas fa-star"></i> Destaques</a></li>
                 <li><a href="#"><i class="fas fa-chart-bar"></i> Estatísticas</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
-                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
             </ul>
         </div>
 
@@ -35,17 +36,6 @@
             </div>
 
             <div class="content">
-                <!-- Filtros -->
-                <div class="filters">
-                    <input type="text" placeholder="Buscar produto..." class="search-input" id="searchInput">
-                    <select class="filter-select" id="filterSelect">
-                        <option value="all">Todos os produtos</option>
-                        <option value="featured">Apenas destaque</option>
-                        <option value="regular">Apenas normais</option>
-                    </select>
-                </div>
-
-                <!-- Tabela de Produtos -->
                 <div class="table-container">
                     <table class="products-table">
                         <thead>
@@ -58,16 +48,14 @@
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Os produtos serão carregados aqui via JavaScript -->
-                        </tbody>
+                        <tbody><!-- carregado via JS --></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal para adicionar/editar produto -->
+    <!-- Modal -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,16 +82,19 @@
                     <input type="number" id="discountPercentage" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="image">URL da Imagem</label>
-                    <input type="url" id="image" required>
+                    <label for="file">Imagem do Produto</label>
+                    <input type="file" id="file" accept="image/*" required>
                 </div>
                 <div class="form-group">
                     <label for="affiliateLink">Link de Afiliado</label>
                     <input type="url" id="affiliateLink" required>
                 </div>
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" id="featured">
-                    <label for="featured">Produto em Destaque</label>
+                <div class="form-group">
+                    <label>Produto em Destaque</label>
+                    <label class="featured-toggle">
+                        <input type="checkbox" id="featured">
+                        <span class="featured-slider"></span>
+                    </label>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
@@ -113,6 +104,8 @@
         </div>
     </div>
 
+
     <script src="/frontend/assets/js/admin.js"></script>
 </body>
+
 </html>

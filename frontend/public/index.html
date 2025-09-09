@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="logo">
@@ -19,39 +21,17 @@
 
     <main>
         <nav class="abas-navegacao">
-            <button class="aba-ativo" data-aba="destaques">
-                <i class="fas fa-bolt"></i> Destaques
-            </button>
-            <button data-aba="mais-ofertas">
-                <i class="fas fa-star"></i> Mais Ofertas
-            </button>
+            <button class="aba-ativo" data-aba="destaques"><i class="fas fa-bolt"></i> Destaques</button>
+            <button data-aba="mais-ofertas"><i class="fas fa-star"></i> Mais Ofertas</button>
         </nav>
 
+        <!-- Produtos agora serão carregados dinamicamente via JS -->
         <section id="destaques" class="produtos-container aba-conteudo aba-ativa">
             <div class="categoria">
                 <i class="fas fa-bolt"></i>
                 <h2>Destaques da Semana</h2>
             </div>
-            
-            <div class="produtos-grid">
-                <!-- Produto 1 -->
-                <div class="produto">
-                    <div class="badge trending">🔥 -50%</div>
-                    <img src="imagens/Quagmire.JPEG" alt="Air Fryer">
-                    <div class="produto-info">
-                        <h3>Air Fryer 5L Turbo</h3>
-                        <div class="precos">
-                            <span class="preco-antigo">R$ 499,90</span>
-                            <span class="preco-atual">R$ 249,90</span>
-                        </div>
-                        <a href="LINK_AFILIADO_1" target="_blank" class="btn-comprar">
-                            <i class="fas fa-shopping-cart"></i> Comprar Agora
-                        </a>
-                    </div>
-                </div>
-
-                <!-- ... (produtos 2 a 6 da seção Destaques) ... -->
-            </div>
+            <div class="produtos-grid"></div>
         </section>
 
         <section id="mais-ofertas" class="produtos-container aba-conteudo">
@@ -59,29 +39,9 @@
                 <i class="fas fa-star"></i>
                 <h2>Mais Ofertas Imperdíveis</h2>
             </div>
-            
-            <div class="produtos-grid">
-                <!-- Produto 7 -->
-                <div class="produto">
-                    <div class="badge">-35%</div>
-                    <img src="imagens/produto7.jpg" alt="Notebook">
-                    <div class="produto-info">
-                        <h3>Notebook Ultra Slim</h3>
-                        <div class="precos">
-                            <span class="preco-antigo">R$ 3.499,90</span>
-                            <span class="preco-atual">R$ 2.274,90</span>
-                        </div>
-                        <a href="LINK_AFILIADO_7" target="_blank" class="btn-comprar">
-                            <i class="fas fa-shopping-cart"></i> Comprar Agora
-                        </a>
-                    </div>
-                </div>
-
-                <!-- ... (produtos 8 a 12 da seção Mais Ofertas) ... -->
-            </div>
+            <div class="produtos-grid"></div>
         </section>
     </main>
-
     <footer>
         <div class="footer-content">
             <div class="logo-footer">
@@ -89,8 +49,8 @@
                 <h3>Achadinhos + Cupons</h3>
             </div>
             <div class="redes-sociais">
-                <a href="LINK_INSTAGRAM" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="LINK_WHATSAPP" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div>
             <p>Os melhores descontos da internet em um só lugar!</p>
         </div>
@@ -98,7 +58,23 @@
             © Achadinhos + Cupons | Todos os direitos reservados
         </div>
     </footer>
-
+    
     <script src="/frontend/assets/js/script.js"></script>
+
+<!-- Botão Grupo 1  -->
+<a class="botao-wpp" href="https://chat.whatsapp.com/LZkR89HifTX7esCReTxEJP?mode=ems_copy_t" target="_blank">
+    <img src="/frontend/assets/imagens/whatsapp.png" alt="WhatsApp" width="45">
+    <span class="tooltip">Grupo 1</span>
+</a>
+
+<!-- Botão Grupo 2  -->
+<a class="botao-wpp" href="https://chat.whatsapp.com/HWoVhMQtOsq0ow4Ov56n2E?mode=ems_copy_t" target="_blank" style="bottom: 90px;">
+    <img src="/frontend/assets/imagens/whatsapp.png" alt="WhatsApp" width="45">
+    <span class="tooltip">Grupo 2</span>
+</a>
+
+
+
 </body>
+
 </html>

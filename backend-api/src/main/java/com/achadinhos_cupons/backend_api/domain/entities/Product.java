@@ -16,25 +16,22 @@ public class Product {
     private String name;
     private Double price;
     private Double oldPrice;
-    private String description;
     private Double discountPercentage;
     private String image;
     private String affiliateLink;
+    private Boolean featured;
 
-    // === Constructor (optional) ===
-    public Product(String uuid, String camiseta, double v, double v1, String camisetaDeAlgodão, double v2, String image) {
-    }
     protected Product() {}
 
-    public Product(UUID id, String name, Double price, Double oldPrice, String description, Double discountPercentage, String image, String affiliateLink ) {
+    public Product(UUID id, String name, Double price, Double oldPrice, Double discountPercentage, String image, String affiliateLink, Boolean featured ) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;
-        this.description = description;
         this.discountPercentage = discountPercentage;
         this.image = image;
         this.affiliateLink = affiliateLink;
+        this.featured = featured;
 
     }
 
@@ -52,10 +49,6 @@ public class Product {
         return oldPrice;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public Double getDiscountPercentage() {
         return discountPercentage;
     }
@@ -67,6 +60,9 @@ public class Product {
     public String getAffiliateLink() {
         return affiliateLink;
     }
+
+    public Boolean getFeatured() { return featured; }
+
 
     public void setId(UUID id) {
         if (id == null) {
@@ -103,13 +99,6 @@ public class Product {
         this.oldPrice = oldPrice;
     }
 
-    public void setDescription(String description) {
-        if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("Description cannot be empty.");
-        }
-        this.description = description.trim();
-    }
-
 
     public void setDiscountPercentage(Double discountPercentage) {
         if (discountPercentage == null) {
@@ -133,6 +122,8 @@ public class Product {
         }
         this.affiliateLink = affiliateLink.trim();
     }
+
+    public void setFeatured(Boolean featured) { this.featured = featured; }
 
 }
 

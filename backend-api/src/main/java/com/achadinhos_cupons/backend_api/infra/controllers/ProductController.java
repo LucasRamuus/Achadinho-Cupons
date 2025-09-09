@@ -43,13 +43,14 @@ public class ProductController {
             @RequestParam("name") String name,
             @RequestParam("price") Double price,
             @RequestParam(value = "oldPrice", required = false) Double oldPrice,
-            @RequestParam("description") String description,
             @RequestParam(value = "discountPercentage", required = false) Double discountPercentage,
             @RequestParam("affiliateLink") String affiliateLink,
+            @RequestParam("featured") Boolean featured,
             @RequestParam("file") MultipartFile file
+
     ) throws Exception {
         ProductRequestDTO dto = new ProductRequestDTO(
-                name, price, oldPrice, description, discountPercentage, null, affiliateLink
+                name, price, oldPrice, discountPercentage, null, affiliateLink, featured
         );
         dto.setFile(file);
         ProductResponseDTO product = createProductUseCase.execute(dto);
@@ -62,36 +63,40 @@ public class ProductController {
             @RequestParam("name") String name,
             @RequestParam("price") Double price,
             @RequestParam(value = "oldPrice", required = false) Double oldPrice,
-            @RequestParam("description") String description,
             @RequestParam(value = "discountPercentage", required = false) Double discountPercentage,
             @RequestParam("affiliateLink") String affiliateLink,
+            @RequestParam("featured") Boolean featured,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
         ProductRequestDTO dto = new ProductRequestDTO();
         dto.setName(name);
         dto.setPrice(price);
         dto.setOldPrice(oldPrice);
-        dto.setDescription(description);
         dto.setDiscountPercentage(discountPercentage);
         dto.setAffiliateLink(affiliateLink);
+        dto.setFeatured(featured);
         dto.setFile(file);
         ProductResponseDTO updatedProduct = updateProductUseCase.execute(id, dto);
         return ResponseEntity.ok(updatedProduct);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDTO>> list() {
+        List<ProductResponseDTO> products = listProductsUseCase.execute();
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDTO> getById(@PathVariable UUID id) {
+        ProductResponseDTO product = getProductByIdUseCase.execute(id);
+        return ResponseEntity.ok(product);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         ProductResponseDTO product = getProductByIdUseCase.execute(id);
-
-        // Remove todas as imagens do S3 (independente da extensão)
-        if (product.getImage() != null && !product.getImage().isEmpty()) {
-            String key = "products/" + product.getId();
-            s3Service.deleteFilesWithPrefix(key);
-        }
-
-        // Remove produto do banco
-        deleteProductUseCase.execute(id);
-
+        deleteProductUseCase.execute(id, product.getImage());
         return ResponseEntity.noContent().build();
     }
+
 }

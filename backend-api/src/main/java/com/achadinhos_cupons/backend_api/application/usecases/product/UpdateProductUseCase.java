@@ -27,12 +27,17 @@ public class UpdateProductUseCase {
 
         // 🔹 Atualiza imagem se houver novo arquivo
         if (request.getFile() != null && !request.getFile().isEmpty()) {
-            String key = "products/" + product.getId();
+            // Se já tinha imagem antiga → deleta
+            if (product.getImage() != null && !product.getImage().isEmpty()) {
+                String oldKey = extractKeyFromUrl(product.getImage());
+                s3Service.deleteFile("products/" + oldKey);
+            }
 
-            // Deleta qualquer arquivo antigo associado ao produto
-            s3Service.deleteFilesWithPrefix(key);
+            // Gera nova chave com extensão
+            String extension = getFileExtension(request.getFile().getOriginalFilename());
+            String key =  product.getId() + extension;
 
-            // Faz upload da nova imagem
+            // Faz upload
             String imageUrl = s3Service.uploadFile(request.getFile(), key);
             product.setImage(imageUrl);
         }
@@ -41,9 +46,9 @@ public class UpdateProductUseCase {
         product.setName(request.getName());
         product.setPrice(request.getPrice());
         product.setOldPrice(request.getOldPrice());
-        product.setDescription(request.getDescription());
         product.setDiscountPercentage(request.getDiscountPercentage());
         product.setAffiliateLink(request.getAffiliateLink());
+        product.setFeatured(request.getFeatured());
 
         Product updatedProduct = productRepository.update(product);
 
@@ -52,10 +57,18 @@ public class UpdateProductUseCase {
                 updatedProduct.getName(),
                 updatedProduct.getPrice(),
                 updatedProduct.getOldPrice(),
-                updatedProduct.getDescription(),
                 updatedProduct.getDiscountPercentage(),
                 updatedProduct.getImage(),
-                updatedProduct.getAffiliateLink()
+                updatedProduct.getAffiliateLink(),
+                updatedProduct.getFeatured()
         );
+    }
+
+    private String getFileExtension(String filename) {
+        return filename.substring(filename.lastIndexOf('.'));
+    }
+
+    private String extractKeyFromUrl(String url) {
+        return url.substring(url.lastIndexOf('/') + 1);
     }
 }

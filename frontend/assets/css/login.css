@@ -152,4 +152,11 @@ input::placeholder {
   input, .btn {
     padding: 14px;
   }
+  .error-message {
+  margin-top: 10px;
+  color: #e74c3c;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}
 }

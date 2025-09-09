@@ -26,32 +26,36 @@ public class CreateProductUseCase {
                 request.getName(),
                 request.getPrice(),
                 request.getOldPrice(),
-                request.getDescription(),
                 request.getDiscountPercentage(),
                 null,
-                request.getAffiliateLink()
+                request.getAffiliateLink(),
+                request.getFeatured()
         );
 
+        // Primeiro salva no banco para gerar o ID
         Product savedProduct = productRepository.save(product);
 
+        // Se tiver imagem, faz upload no S3
         if (request.getFile() != null && !request.getFile().isEmpty()) {
             String extension = getFileExtension(request.getFile().getOriginalFilename());
-            String key = savedProduct.getId().toString() + extension;
+            String key = savedProduct.getId().toString() + extension; // sem 'products/'
 
             String imageUrl = s3Service.uploadFile(request.getFile(), key);
             savedProduct.setImage(imageUrl);
+
             savedProduct = productRepository.update(savedProduct);
         }
+
 
         return new ProductResponseDTO(
                 savedProduct.getId(),
                 savedProduct.getName(),
                 savedProduct.getPrice(),
                 savedProduct.getOldPrice(),
-                savedProduct.getDescription(),
                 savedProduct.getDiscountPercentage(),
                 savedProduct.getImage(),
-                savedProduct.getAffiliateLink()
+                savedProduct.getAffiliateLink(),
+                savedProduct.getFeatured()
         );
     }
 

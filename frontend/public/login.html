@@ -12,38 +12,17 @@
     <div class="login-container">
       <div class="logo">🏷️ Achadinhos + Cupons</div>
       <p class="slogan">Descontos imperdíveis, achados que valem ouro!</p>
-      
-      <form class="login-form" onsubmit="return loginUser(event)">
+
+      <form id="loginForm" class="login-form">
         <input type="text" id="username" placeholder="Usuário" required>
         <input type="password" id="password" placeholder="Senha" required>
         <button type="submit" class="btn btn-primary btn-login">Entrar</button>
       </form>
+
+      <p id="loginError" style="color:red; display:none; margin-top:10px;"></p>
     </div>
   </div>
 
-  <script>
-    function loginUser(event) {
-      event.preventDefault();
-      
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      // Aqui você faria a validação e autenticação
-      console.log('Tentativa de login:', { username, password });
-      
-      // Simulação de login (substitua pela sua lógica real)
-      const loginBtn = document.querySelector('.btn-login');
-      loginBtn.textContent = 'Entrando...';
-      loginBtn.disabled = true;
-      
-      setTimeout(() => {
-        alert('Login realizado com sucesso! (simulação)');
-        loginBtn.textContent = 'Entrar';
-        loginBtn.disabled = false;
-      }, 1500);
-      
-      return false;
-    }
-  </script>
+  <script src="/frontend/assets/js/login.js"></script>
 </body>
 </html>

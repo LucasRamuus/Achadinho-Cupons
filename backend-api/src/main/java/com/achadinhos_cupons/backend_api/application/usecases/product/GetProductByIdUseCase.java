@@ -31,10 +31,10 @@ public class GetProductByIdUseCase {
                 product.getName(),
                 product.getPrice(),
                 product.getOldPrice(),
-                product.getDescription(),
                 product.getDiscountPercentage(),
                 product.getImage(),
-                product.getAffiliateLink()
+                product.getAffiliateLink(),
+                product.getFeatured()
         );
     }
 }
