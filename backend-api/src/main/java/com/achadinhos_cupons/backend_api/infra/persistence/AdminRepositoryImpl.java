@@ -46,7 +46,7 @@ public class AdminRepositoryImpl implements AdminGateway {
     public boolean existsById(UUID id) {
         return jpaRepository.existsById(id);
     }
-
 }
+
 
 

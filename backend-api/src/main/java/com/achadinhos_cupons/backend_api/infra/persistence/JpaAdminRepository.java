@@ -9,6 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface JpaAdminRepository extends JpaRepository<Admin, UUID>, AdminGateway {
+public interface JpaAdminRepository extends JpaRepository<Admin, UUID> {
     Optional<Admin> findByUsername(String username);
 }
