@@ -81,14 +81,9 @@
 			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>RELEASE</version>
+			<version>7.9.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

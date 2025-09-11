@@ -1,0 +1,22 @@
+name: "Deploy para VPS"
+on:
+  push:
+    branches:
+      -main
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "Baixar o código"
+        uses: actions/checkout@v4
+
+      - name: "Copia arquivos para VPS"
+        uses: appleboy/scp-action@v1
+        with:
+          host: ""
+          username: ""
+          key: ""
+          source: "."
+          target: your_server_target_folder_path
+        

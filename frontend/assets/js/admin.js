@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.querySelector(".close");
   const logoutBtn = document.getElementById("logoutBtn");
 
+  // Campos usados para calcular desconto
+  const priceInput = document.getElementById("price");
+  const oldPriceInput = document.getElementById("oldPrice");
+  const discountInput = document.getElementById("discountPercentage");
+
   // -------------------- LOGOUT --------------------
   logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwtToken");
@@ -74,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
       productsTable.appendChild(row);
     });
 
-    // Eventos editar/excluir e toggle destaque
     productsTable.addEventListener("click", handleTableClick);
     productsTable.addEventListener("change", handleFeaturedToggle);
   }
@@ -112,11 +116,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // -------------------- CALCULAR DESCONTO --------------------
+  function calcularDesconto() {
+    const price = parseFloat(priceInput.value);
+    const oldPrice = parseFloat(oldPriceInput.value);
+
+    if (!isNaN(price) && !isNaN(oldPrice) && oldPrice > 0 && price < oldPrice) {
+      const desconto = ((oldPrice - price) / oldPrice) * 100;
+      discountInput.value = Math.round(desconto); // arredonda para inteiro
+    } else {
+      discountInput.value = "";
+    }
+  }
+
+  priceInput.addEventListener("input", calcularDesconto);
+  oldPriceInput.addEventListener("input", calcularDesconto);
+
   // -------------------- MODAL --------------------
   function openAddModal() {
     document.getElementById("modalTitle").textContent = "Adicionar Produto";
     productForm.reset();
+    discountInput.value = "";
     document.getElementById("file").required = true;
+    productForm.removeAttribute("data-edit-id");
     productModal.style.display = "block";
   }
 
@@ -129,11 +151,14 @@ document.addEventListener("DOMContentLoaded", () => {
     productForm.querySelector("#name").value = product.name;
     productForm.querySelector("#price").value = product.price;
     productForm.querySelector("#oldPrice").value = product.oldPrice;
-    productForm.querySelector("#discountPercentage").value = product.discountPercentage;
     productForm.querySelector("#affiliateLink").value = product.affiliateLink;
     productForm.querySelector("#featured").checked = product.featured;
     productForm.querySelector("#file").required = false;
     productForm.setAttribute("data-edit-id", id);
+
+    // recalcula o desconto ao abrir
+    calcularDesconto();
+
     productModal.style.display = "block";
   }
 
@@ -152,6 +177,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function saveProduct(e) {
     e.preventDefault();
+
+    // garante desconto atualizado
+    calcularDesconto();
+
     const editId = productForm.getAttribute("data-edit-id");
     let url = `${API_URL}/products`;
     let method = "POST";
@@ -159,9 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = new FormData();
     formData.append("name", document.getElementById("name").value);
-    formData.append("price", parseFloat(document.getElementById("price").value));
-    formData.append("oldPrice", parseFloat(document.getElementById("oldPrice").value));
-    formData.append("discountPercentage", parseFloat(document.getElementById("discountPercentage").value));
+    formData.append("price", parseFloat(priceInput.value));
+    formData.append("oldPrice", parseFloat(oldPriceInput.value));
+    formData.append("discountPercentage", parseFloat(discountInput.value) || 0);
     formData.append("affiliateLink", document.getElementById("affiliateLink").value);
     formData.append("featured", document.getElementById("featured").checked);
 
