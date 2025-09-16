@@ -1,36 +1,64 @@
-version: "3.8"
-
 services:
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-
-  backend:
-    build: ./backend-api
-    container_name: backend
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
-      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-    expose:
-      - "8080"   # expõe só para a rede interna do compose
-    depends_on:
-      - db
-
+  # Banco de dados
   db:
     image: postgres:17
-    container_name: postgres
-    restart: always
+    container_name: achadinho_postgres
     env_file:
       - .env
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks:
+      - achadinho-network
+    restart: unless-stopped
+
+  # Backend (Spring Boot)
+  backend:
+    build:
+      context: ./backend-api
+      dockerfile: Dockerfile
+    container_name: achadinho_backend
+    env_file:
+      - .env
+    expose:
+      - "8080" # só para nginx
+    depends_on:
+      - db
+    networks:
+      - achadinho-network
+    restart: unless-stopped
+  
+  # Frontend (HTML/CSS/JS)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: achadinho_frontend
+    expose:
+      - "80" # só para nginx
+    networks:
+      - achadinho-network
+    restart: unless-stopped
+
+  # Nginx (proxy frontend + backend)
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: achadinho_nginx
+    ports:
+      - "8080:80" # usuário acessa localhost:8080
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - achadinho-network
+    restart: unless-stopped
 
 volumes:
   db_data:
+
+networks:
+  achadinho-network:
+    driver: bridge

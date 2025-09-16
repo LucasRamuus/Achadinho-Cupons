@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) {
         loginError.textContent = response.status === 401 
           ? "Usuário ou senha incorretos!" 
-          : "Erro ao autenticar, tente novamente!";
+          : "Usuário ou senha incorretos!";
         loginError.style.display = "block";
         return;
       }
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Salvar token na sessionStorage (expira quando o navegador fecha)
       sessionStorage.setItem("jwtToken", token);
-      window.location.href = "/frontend/public/admin.html";
+      window.location.href = "admin.html";
 
     } catch (error) {
       console.error(error);

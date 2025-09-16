@@ -1,6 +1,8 @@
 # Arquivos de configuração com dados sensíveis - COLOCAR NO TOPO!
 src/main/resources/application.properties
 
+.env
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar

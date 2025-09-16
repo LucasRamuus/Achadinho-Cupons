@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.UUID;
+import jakarta.persistence.Column;
 
 @Entity
 public class Product {
@@ -15,9 +16,12 @@ public class Product {
     private UUID id;
     private String name;
     private Double price;
+    @Column(name = "old_price")
     private Double oldPrice;
+    @Column(name = "discount_percentage")
     private Double discountPercentage;
     private String image;
+    @Column(name = "affiliate_link")
     private String affiliateLink;
     private Boolean featured;
 

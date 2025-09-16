@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const API_URL = "http://localhost:8080";
+  const API_URL = ""; // URLs relativas → Nginx vai encaminhar
   let products = [];
 
   // -------------------- TOKEN --------------------
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = sessionStorage.getItem("jwtToken");
   if (!isTokenValid(token)) {
     sessionStorage.removeItem("jwtToken");
-    window.location.href = "/frontend/public/login.html";
+    window.location.href = "login.html";
   }
 
   // -------------------- DOM ELEMENTS --------------------
@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.querySelector(".close");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  // Campos usados para calcular desconto
   const priceInput = document.getElementById("price");
   const oldPriceInput = document.getElementById("oldPrice");
   const discountInput = document.getElementById("discountPercentage");
@@ -36,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------- LOGOUT --------------------
   logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwtToken");
-    window.location.href = "/frontend/public/login.html";
+    window.location.href = "login.html";
   });
 
   // -------------------- FUNÇÕES DE PRODUTOS --------------------
@@ -45,11 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`${API_URL}/products`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error("Erro ao buscar produtos");
+      if (!response.ok) throw new Error(`Erro ao buscar produtos: ${response.status}`);
       products = await response.json();
       loadProducts();
     } catch (error) {
-      console.error(error);
+      console.error("fetchProducts:", error);
       alert("Não foi possível conectar ao servidor.");
     }
   }
@@ -64,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td><img src="${product.image}" alt="${product.name}" class="product-image"></td>
         <td>${product.name}</td>
         <td>R$ ${product.price.toFixed(2)}</td>
-        <td><span class="discount-badge">${product.discountPercentage}% OFF</span></td>
+        <td><span class="discount-badge">${product.discountPercentage || 0}% OFF</span></td>
         <td>
           <label class="featured-toggle">
             <input type="checkbox" ${product.featured ? "checked" : ""} data-id="${product.id}">
@@ -99,18 +98,20 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("name", product.name);
     formData.append("price", product.price);
     formData.append("oldPrice", product.oldPrice);
-    formData.append("discountPercentage", product.discountPercentage);
+    formData.append("discountPercentage", product.discountPercentage || 0);
     formData.append("affiliateLink", product.affiliateLink);
     formData.append("featured", checkbox.checked);
 
     try {
-      await fetch(`${API_URL}/products/${id}`, {
+      const res = await fetch(`${API_URL}/products/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
+      if (!res.ok) throw new Error(`Erro ao atualizar destaque: ${res.status}`);
       product.featured = checkbox.checked;
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Erro ao atualizar destaque.");
       checkbox.checked = !checkbox.checked;
     }
@@ -120,10 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function calcularDesconto() {
     const price = parseFloat(priceInput.value);
     const oldPrice = parseFloat(oldPriceInput.value);
-
     if (!isNaN(price) && !isNaN(oldPrice) && oldPrice > 0 && price < oldPrice) {
       const desconto = ((oldPrice - price) / oldPrice) * 100;
-      discountInput.value = Math.round(desconto); // arredonda para inteiro
+      discountInput.value = desconto.toFixed(2);
     } else {
       discountInput.value = "";
     }
@@ -156,29 +156,27 @@ document.addEventListener("DOMContentLoaded", () => {
     productForm.querySelector("#file").required = false;
     productForm.setAttribute("data-edit-id", id);
 
-    // recalcula o desconto ao abrir
     calcularDesconto();
-
     productModal.style.display = "block";
   }
 
   async function deleteProduct(id) {
     if (!confirm("Tem certeza que deseja excluir este produto?")) return;
     try {
-      await fetch(`${API_URL}/products/${id}`, {
+      const res = await fetch(`${API_URL}/products/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (!res.ok) throw new Error(`Erro ao excluir produto: ${res.status}`);
       fetchProducts();
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Erro ao excluir produto.");
     }
   }
 
   async function saveProduct(e) {
     e.preventDefault();
-
-    // garante desconto atualizado
     calcularDesconto();
 
     const editId = productForm.getAttribute("data-edit-id");
@@ -198,11 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fileInput.files.length > 0) formData.append("file", fileInput.files[0]);
 
     try {
-      await fetch(url, { method, headers: { Authorization: `Bearer ${token}` }, body: formData });
+      const res = await fetch(url, { method, headers: { Authorization: `Bearer ${token}` }, body: formData });
+      if (!res.ok) throw new Error(`Erro ao salvar produto: ${res.status}`);
       productForm.removeAttribute("data-edit-id");
       closeModal();
       fetchProducts();
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Erro ao salvar produto.");
     }
   }
