@@ -5,8 +5,6 @@ services:
     container_name: achadinho_postgres
     env_file:
       - .env
-    ports:
-      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
@@ -48,7 +46,8 @@ services:
       dockerfile: Dockerfile
     container_name: achadinho_nginx
     ports:
-      - "8080:80" # usuário acessa localhost:8080
+      - "80:80" # usuário acessa localhost:8080
+      - "443:443"
     depends_on:
       - frontend
       - backend
