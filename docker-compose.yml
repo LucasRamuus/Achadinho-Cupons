@@ -46,8 +46,8 @@ services:
       dockerfile: Dockerfile
     container_name: achadinho_nginx
     ports:
-      - "80:80" # usuário acessa localhost:8080
-      - "443:443"
+      - "81:80" # usuário acessa localhost:8080
+      - "8443:443"
     depends_on:
       - frontend
       - backend
