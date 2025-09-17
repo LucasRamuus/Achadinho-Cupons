@@ -46,8 +46,8 @@ services:
       dockerfile: Dockerfile
     container_name: achadinho_nginx
     ports:
-      - "80:80"    # libera HTTP no domínio
-      - "443:443"  # libera HTTPS no domínio
+      - "81:80"    # libera HTTP no domínio
+      - "8443:443"  # libera HTTPS no domínio
     depends_on:
       - frontend
       - backend
