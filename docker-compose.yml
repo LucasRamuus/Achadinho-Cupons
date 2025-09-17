@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     expose:
-      - "8080" # só para nginx
+      - "8080" # apenas para o nginx enxergar
     depends_on:
       - db
     networks:
@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile
     container_name: achadinho_frontend
     expose:
-      - "80" # só para nginx
+      - "80" # apenas para o nginx enxergar
     networks:
       - achadinho-network
     restart: unless-stopped
@@ -46,14 +46,19 @@ services:
       dockerfile: Dockerfile
     container_name: achadinho_nginx
     ports:
-      - "81:80" # usuário acessa localhost:8080
-      - "8443:443"
+      - "80:80"    # libera HTTP no domínio
+      - "443:443"  # libera HTTPS no domínio
     depends_on:
       - frontend
       - backend
     networks:
       - achadinho-network
     restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites-available:/etc/nginx/sites-available
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/letsencrypt:/etc/letsencrypt
 
 volumes:
   db_data:
