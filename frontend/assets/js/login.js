@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Salvar token na sessionStorage (expira quando o navegador fecha)
       sessionStorage.setItem("jwtToken", token);
-      window.location.href = "admin.html";
+      window.location.href = "/admin";
 
     } catch (error) {
       console.error(error);

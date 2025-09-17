@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = sessionStorage.getItem("jwtToken");
   if (!isTokenValid(token)) {
     sessionStorage.removeItem("jwtToken");
-    window.location.href = "login.html";
+    window.location.href = "/login";
   }
 
   // -------------------- DOM ELEMENTS --------------------
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------- LOGOUT --------------------
   logoutBtn.addEventListener("click", () => {
     sessionStorage.removeItem("jwtToken");
-    window.location.href = "login.html";
+    window.location.href = "/login";
   });
 
   // -------------------- FUNÇÕES DE PRODUTOS --------------------
@@ -58,12 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
     productsTable.innerHTML = "";
 
     products.forEach(product => {
+      const descontoArredondado = Math.round(product.discountPercentage || 0);
       const row = document.createElement("tr");
       row.innerHTML = `
         <td><img src="${product.image}" alt="${product.name}" class="product-image"></td>
         <td>${product.name}</td>
         <td>R$ ${product.price.toFixed(2)}</td>
-        <td><span class="discount-badge">${product.discountPercentage || 0}% OFF</span></td>
+        <td><span class="discount-badge">${descontoArredondado}% OFF</span></td>
         <td>
           <label class="featured-toggle">
             <input type="checkbox" ${product.featured ? "checked" : ""} data-id="${product.id}">
@@ -121,13 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function calcularDesconto() {
     const price = parseFloat(priceInput.value);
     const oldPrice = parseFloat(oldPriceInput.value);
+
     if (!isNaN(price) && !isNaN(oldPrice) && oldPrice > 0 && price < oldPrice) {
       const desconto = ((oldPrice - price) / oldPrice) * 100;
-      discountInput.value = desconto.toFixed(2);
+      discountInput.value = Math.round(desconto); // arredonda para número inteiro
     } else {
       discountInput.value = "";
     }
-  }
+}
 
   priceInput.addEventListener("input", calcularDesconto);
   oldPriceInput.addEventListener("input", calcularDesconto);
