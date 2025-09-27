@@ -1,5 +1,4 @@
 services:
-  # Banco de dados
   db:
     image: postgres:17
     container_name: achadinho_postgres
@@ -8,10 +7,9 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
-      - achadinho-network
+      - apps_network
     restart: unless-stopped
 
-  # Backend (Spring Boot)
   backend:
     build:
       context: ./backend-api
@@ -24,10 +22,9 @@ services:
     depends_on:
       - db
     networks:
-      - achadinho-network
+      - apps_network
     restart: unless-stopped
-  
-  # Frontend (HTML/CSS/JS)
+
   frontend:
     build:
       context: ./frontend
@@ -36,30 +33,12 @@ services:
     expose:
       - "80"
     networks:
-      - achadinho-network
+      - apps_network
     restart: unless-stopped
-
-  # Nginx local (não expõe portas, apenas interno)
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: achadinho_nginx_internal
-    # Remove as portas expostas - será acessado via proxy
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - achadinho-network
-    restart: unless-stopped
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/sites-available:/etc/nginx/sites-available
-      - ./nginx/conf.d:/etc/nginx/conf.d
 
 volumes:
   db_data:
 
 networks:
-  achadinho-network:
-    driver: bridge
+  apps_network:
+    external: true

@@ -65,7 +65,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://69.62.100.44:81"));
+        configuration.setAllowedOrigins(List.of("https://www.achadinhoscupons.com", "https://achadinhoscupons.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // inclui OPTIONS
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // se precisar enviar cookies ou Authorization

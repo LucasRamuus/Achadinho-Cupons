@@ -64,10 +64,13 @@
                 <span class="close">&times;</span>
             </div>
             <form id="productForm" class="modal-body">
+                <!-- Nome -->
                 <div class="form-group">
                     <label for="name">Nome do Produto</label>
                     <input type="text" id="name" required>
                 </div>
+
+                <!-- Preços -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="price">Preço Atual (R$)</label>
@@ -78,18 +81,30 @@
                         <input type="number" id="oldPrice" step="0.01" required>
                     </div>
                 </div>
+
+                <!-- Desconto -->
                 <div class="form-group">
                     <label for="discountPercentage">Percentual de Desconto (%)</label>
                     <input type="number" id="discountPercentage" step="0.01" readonly>
                 </div>
+
+                <!-- Upload -->
                 <div class="form-group">
                     <label for="file">Imagem do Produto</label>
-                    <input type="file" id="file" accept="image/*" required>
+                    <label class="file-upload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Clique aqui para selecionar imagem</span>
+                        <input type="file" id="file" accept="image/*" required>
+                    </label>
                 </div>
+
+                <!-- Link -->
                 <div class="form-group">
                     <label for="affiliateLink">Link de Afiliado</label>
                     <input type="url" id="affiliateLink" required>
                 </div>
+
+                <!-- Destaque -->
                 <div class="form-group">
                     <label>Produto em Destaque</label>
                     <label class="featured-toggle">
@@ -97,6 +112,8 @@
                         <span class="featured-slider"></span>
                     </label>
                 </div>
+
+                <!-- Botões -->
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar Produto</button>
@@ -104,7 +121,6 @@
             </form>
         </div>
     </div>
-
 
     <script src="../assets/js/admin.js"></script>
 </body>

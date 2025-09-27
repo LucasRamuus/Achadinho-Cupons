@@ -35,12 +35,6 @@ public class AdminController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<AdminResponseDTO> create(@RequestBody AdminRequestDTO requestDTO) {
-        AdminResponseDTO savedAdmin = createAdminUseCase.createAdmin(requestDTO);
-        return ResponseEntity.ok(savedAdmin);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<AdminResponseDTO> getById(@PathVariable UUID id) {
         return getAdminByIdUseCase.execute(id)

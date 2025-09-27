@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const priceInput = document.getElementById("price");
   const oldPriceInput = document.getElementById("oldPrice");
   const discountInput = document.getElementById("discountPercentage");
+  const fileInput = document.getElementById("file");
+  const fileLabel = document.querySelector(".file-upload span");
 
   // -------------------- LOGOUT --------------------
   logoutBtn.addEventListener("click", () => {
@@ -38,7 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/login";
   });
 
-  // -------------------- FUNÇÕES DE PRODUTOS --------------------
+  // -------------------- PRODUTOS --------------------
+  let currentPage = 1;
+  const itemsPerPage = 10;
+
   async function fetchProducts() {
     try {
       const response = await fetch(`${API_URL}/products`, {
@@ -54,10 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function loadProducts() {
-    const productsTable = document.querySelector(".products-table tbody");
-    productsTable.innerHTML = "";
+    const tbody = document.querySelector(".products-table tbody");
+    tbody.innerHTML = "";
 
-    products.forEach(product => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const paginatedProducts = products.slice(start, end);
+
+    paginatedProducts.forEach(product => {
       const descontoArredondado = Math.round(product.discountPercentage || 0);
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -76,11 +85,44 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="btn btn-secondary btn-sm delete-btn" data-id="${product.id}"><i class="fas fa-trash"></i> Excluir</button>
         </td>
       `;
-      productsTable.appendChild(row);
+      tbody.appendChild(row);
     });
 
-    productsTable.addEventListener("click", handleTableClick);
-    productsTable.addEventListener("change", handleFeaturedToggle);
+    tbody.addEventListener("click", handleTableClick);
+    tbody.addEventListener("change", handleFeaturedToggle);
+
+    renderPagination();
+  }
+
+  function renderPagination() {
+    let paginationContainer = document.getElementById("pagination");
+    if (!paginationContainer) {
+      paginationContainer = document.createElement("div");
+      paginationContainer.id = "pagination";
+      document.querySelector(".table-container").after(paginationContainer);
+    }
+
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+
+    paginationContainer.innerHTML = `
+      <button class="pagination-btn" ${currentPage === 1 ? "disabled" : ""} id="prevPage">⟨ Anterior</button>
+      <span class="pagination-info">Página ${currentPage} de ${totalPages}</span>
+      <button class="pagination-btn" ${currentPage === totalPages ? "disabled" : ""} id="nextPage">Próxima ⟩</button>
+    `;
+
+    document.getElementById("prevPage").addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        loadProducts();
+      }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        loadProducts();
+      }
+    });
   }
 
   function handleTableClick(e) {
@@ -125,21 +167,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!isNaN(price) && !isNaN(oldPrice) && oldPrice > 0 && price < oldPrice) {
       const desconto = ((oldPrice - price) / oldPrice) * 100;
-      discountInput.value = Math.round(desconto); // arredonda para número inteiro
+      discountInput.value = Math.round(desconto);
     } else {
       discountInput.value = "";
     }
-}
+  }
 
   priceInput.addEventListener("input", calcularDesconto);
   oldPriceInput.addEventListener("input", calcularDesconto);
+
+  // -------------------- FEEDBACK DO ARQUIVO --------------------
+  fileInput.addEventListener("change", () => {
+    fileLabel.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "Clique aqui para selecionar imagem";
+  });
 
   // -------------------- MODAL --------------------
   function openAddModal() {
     document.getElementById("modalTitle").textContent = "Adicionar Produto";
     productForm.reset();
     discountInput.value = "";
-    document.getElementById("file").required = true;
+    fileInput.required = true;
+    fileLabel.textContent = "Clique aqui para selecionar imagem";
     productForm.removeAttribute("data-edit-id");
     productModal.style.display = "block";
   }
@@ -155,7 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
     productForm.querySelector("#oldPrice").value = product.oldPrice;
     productForm.querySelector("#affiliateLink").value = product.affiliateLink;
     productForm.querySelector("#featured").checked = product.featured;
-    productForm.querySelector("#file").required = false;
+    fileInput.required = false;
+    fileLabel.textContent = "Clique aqui para selecionar imagem";
     productForm.setAttribute("data-edit-id", id);
 
     calcularDesconto();
@@ -194,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("affiliateLink", document.getElementById("affiliateLink").value);
     formData.append("featured", document.getElementById("featured").checked);
 
-    const fileInput = document.getElementById("file");
     if (fileInput.files.length > 0) formData.append("file", fileInput.files[0]);
 
     try {
@@ -212,6 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeModal() {
     productModal.style.display = "none";
     productForm.removeAttribute("data-edit-id");
+    fileLabel.textContent = "Clique aqui para selecionar imagem";
   }
 
   // -------------------- EVENTOS --------------------
